@@ -1,0 +1,334 @@
+/* ============================================================
+   Profile Page Styles
+   ============================================================ */
+
+.profile-page {
+  padding: var(--space-4);
+  padding-bottom: 100px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Hero */
+.profile-hero {
+  text-align: center;
+  margin-bottom: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.profile-avatar-container {
+  position: relative;
+  margin-bottom: var(--space-2);
+}
+
+.profile-avatar-ring {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-full);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--blue-800);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-avatar-emoji {
+  font-size: 2.5rem;
+}
+
+.profile-level-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: var(--blue-500);
+  color: var(--white);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--blue-800);
+}
+
+.profile-hero h1 {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--white);
+}
+
+.profile-level-name {
+  font-size: var(--text-base);
+  color: var(--blue-300);
+  font-weight: 600;
+}
+
+.profile-xp-section {
+  width: 100%;
+  max-width: 320px;
+}
+
+.profile-xp-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+  margin-bottom: var(--space-1);
+}
+
+.profile-xp-label span:first-child {
+  font-weight: 700;
+  color: var(--gold-400);
+}
+
+/* Streak */
+.profile-streak-card {
+  margin-bottom: var(--space-5);
+}
+
+.profile-streak-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.profile-streak-fire { font-size: 2rem; }
+
+.profile-streak-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-streak-number {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--white);
+}
+
+.profile-streak-label {
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+}
+
+.profile-streak-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.profile-streak-week {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--space-2);
+}
+
+.profile-streak-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.profile-dot-active {
+  background: rgba(0, 112, 224, 0.2);
+  border-color: var(--blue-400);
+}
+
+.profile-dot-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--gray-500);
+}
+
+.profile-dot-active .profile-dot-label { color: var(--blue-300); }
+
+/* Tabs */
+.profile-tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-xl);
+  padding: var(--space-1);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.profile-tab {
+  flex: 1;
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--gray-400);
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.profile-tab-active {
+  background: rgba(0, 112, 224, 0.15);
+  color: var(--blue-300);
+}
+
+/* Stats */
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+@media (max-width: 400px) {
+  .profile-stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.profile-stat-item {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.profile-stat-num {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--white);
+}
+
+.profile-stat-label {
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+}
+
+/* Badges */
+.profile-badges-header {
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+  margin-bottom: var(--space-3);
+  text-align: center;
+}
+
+.profile-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+
+@media (max-width: 480px) {
+  .profile-badges-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.profile-badge-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.profile-badge-earned {
+  background: rgba(0, 112, 224, 0.08);
+  border: 1px solid rgba(0, 112, 224, 0.15);
+}
+
+.profile-badge-locked {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  opacity: 0.5;
+}
+
+.profile-badge-icon { font-size: 2rem; }
+
+.profile-badge-name {
+  font-size: 0.6rem;
+  color: var(--gray-400);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Levels */
+.profile-levels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.profile-level-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.profile-level-reached { opacity: 1; }
+.profile-level-unreached { opacity: 0.4; }
+
+.profile-level-icon { font-size: 1.8rem; min-width: 36px; text-align: center; }
+
+.profile-level-info {
+  flex: 1;
+}
+
+.profile-level-info h4 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--white);
+}
+
+.profile-level-info span {
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+}
+
+/* Badge Modal */
+.profile-badge-modal {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.profile-badge-modal-icon { font-size: 4rem; }
+
+.profile-badge-modal h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--white);
+}
+
+.profile-badge-modal p {
+  color: var(--gray-400);
+  font-size: var(--text-base);
+}
+
+.profile-badge-reward {
+  font-size: var(--text-sm);
+  color: var(--gold-400);
+  font-weight: 600;
+}
+
+/* Logout */
+.profile-logout-section {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}

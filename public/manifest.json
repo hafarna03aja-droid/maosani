@@ -1,0 +1,36 @@
+{
+  "name": "MAOSANI — Belajar Al-Qur'an",
+  "short_name": "MAOSANI",
+  "description": "Metode Sembilan Langkah Bisa Baca Al-Qur'an & Tajwid Metode Selembar",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "id",
+  "categories": ["education", "books"],
+  "icons": [
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Peta Belajar",
+      "short_name": "Belajar",
+      "url": "/roadmap",
+      "icons": [{ "src": "/icon-512.png", "sizes": "512x512" }]
+    },
+    {
+      "name": "Latihan Menulis",
+      "short_name": "Menulis",
+      "url": "/canvas",
+      "icons": [{ "src": "/icon-512.png", "sizes": "512x512" }]
+    }
+  ]
+}

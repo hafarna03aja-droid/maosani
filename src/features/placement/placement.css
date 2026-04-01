@@ -1,0 +1,210 @@
+/* ============================================================
+   Placement Test Styles
+   ============================================================ */
+
+.placement-page {
+  padding: var(--space-4);
+  padding-bottom: 100px;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: calc(100vh - var(--navbar-height) - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Intro */
+.placement-intro {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.placement-intro-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-2);
+}
+
+.placement-intro h1 {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--white);
+}
+
+.placement-intro p {
+  color: var(--gray-400);
+  line-height: 1.6;
+  max-width: 360px;
+}
+
+.placement-intro-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+  padding: var(--space-4);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  width: 100%;
+  max-width: 280px;
+}
+
+/* Quiz */
+.placement-quiz {
+  width: 100%;
+}
+
+.placement-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.placement-progress span {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--gray-400);
+  white-space: nowrap;
+  min-width: 70px;
+}
+
+.placement-question {
+  text-align: center;
+}
+
+.placement-q-label {
+  font-size: var(--text-lg);
+  color: var(--gray-200);
+  margin-bottom: var(--space-4);
+  font-weight: 500;
+}
+
+.placement-q-arabic {
+  margin-bottom: var(--space-8);
+  color: var(--white);
+  text-shadow: 0 0 30px rgba(0, 112, 224, 0.3);
+}
+
+/* Options */
+.placement-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.placement-option {
+  padding: var(--space-4);
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl);
+  color: var(--gray-200);
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+}
+
+.placement-option:hover:not(:disabled) {
+  border-color: var(--blue-500);
+  background: rgba(0, 112, 224, 0.08);
+}
+
+.placement-option-selected {
+  border-color: var(--blue-500);
+  background: rgba(0, 112, 224, 0.15);
+}
+
+.placement-option-correct {
+  border-color: var(--success) !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: var(--success) !important;
+}
+
+.placement-option-wrong {
+  border-color: var(--error) !important;
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: var(--error) !important;
+}
+
+.placement-option-dimmed {
+  opacity: 0.3;
+}
+
+/* Result */
+.placement-result {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.placement-result-icon {
+  font-size: 4rem;
+}
+
+.placement-result h1 {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--white);
+}
+
+.placement-score-ring {
+  padding: var(--space-6);
+  border-radius: var(--radius-full);
+  background: rgba(0, 112, 224, 0.1);
+  border: 3px solid var(--blue-500);
+  width: 140px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.placement-score-number {
+  font-size: var(--text-3xl);
+  font-weight: 900;
+  color: var(--white);
+}
+
+.placement-score-label {
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+}
+
+.placement-recommendation {
+  text-align: center;
+  width: 100%;
+}
+
+.placement-recommendation h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--blue-300);
+  margin-bottom: var(--space-2);
+}
+
+.placement-recommendation p {
+  color: var(--gray-300);
+  font-size: var(--text-base);
+  line-height: 1.5;
+}
+
+.placement-result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 320px;
+}

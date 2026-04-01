@@ -1,0 +1,524 @@
+/* ============================================================
+   Learning Module Styles
+   ============================================================ */
+
+.learning-page {
+  padding: var(--space-4);
+  padding-bottom: 100px;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+/* Header */
+.learning-header {
+  margin-bottom: var(--space-5);
+}
+
+.learning-back {
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+  margin-bottom: var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) 0;
+  transition: color var(--transition-fast);
+}
+
+.learning-back:hover { color: var(--blue-400); }
+
+.learning-header-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.learning-header h1 {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: var(--space-1);
+}
+
+.learning-not-found {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Tabs */
+.learning-tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-xl);
+  padding: var(--space-1);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.learning-tab {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--gray-400);
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.learning-tab:hover { color: var(--gray-200); }
+
+.learning-tab-active {
+  background: rgba(0, 112, 224, 0.15);
+  color: var(--blue-300) !important;
+}
+
+/* -------- HURUF DISPLAY -------- */
+.learning-toggle-bar {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  justify-content: center;
+}
+
+.learning-toggle-btn {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--gray-400);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all var(--transition-fast);
+}
+
+.learning-toggle-btn.active {
+  background: rgba(0, 112, 224, 0.15);
+  border-color: var(--blue-500);
+  color: var(--blue-300);
+}
+
+.learning-letter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 640px) {
+  .learning-letter-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+.learning-letter-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.learning-letter-card:hover {
+  border-color: var(--blue-500);
+  background: rgba(0, 112, 224, 0.08);
+}
+
+.learning-letter-playing {
+  border-color: var(--blue-400) !important;
+  box-shadow: var(--shadow-glow-blue);
+}
+
+.learning-letter-arabic {
+  font-size: 2rem;
+  color: var(--white);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.learning-connected-forms {
+  display: flex;
+  gap: var(--space-1);
+  font-size: 1rem;
+  color: var(--blue-300);
+  direction: rtl;
+}
+
+.learning-letter-name {
+  font-size: 0.6rem;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.learning-letter-order {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 0.55rem;
+  color: var(--gray-600);
+  font-weight: 700;
+}
+
+.learning-letter-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  border: 2px solid var(--blue-400);
+  pointer-events: none;
+}
+
+/* Letter Detail */
+.learning-letter-detail {
+  margin-bottom: var(--space-5);
+}
+
+.learning-detail-header {
+  text-align: center;
+  margin-bottom: var(--space-4);
+}
+
+.learning-detail-header h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--gray-200);
+  margin-top: var(--space-2);
+}
+
+.learning-detail-forms {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.learning-form-item {
+  text-align: center;
+  padding: var(--space-2);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-lg);
+}
+
+.learning-form-label {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+  margin-bottom: var(--space-1);
+}
+
+.learning-detail-actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+/* -------- HARAKAT DISPLAY -------- */
+.learning-harakat-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.learning-harakat-info {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.learning-harakat-info p {
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+}
+
+.learning-harakat-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.learning-harakat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.learning-harakat-header h4 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--white);
+}
+
+.learning-harakat-header p {
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+}
+
+.learning-harakat-letters {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: var(--space-3);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-lg);
+}
+
+.learning-harakat-char {
+  font-size: 1.8rem;
+  color: var(--gray-300);
+  transition: all var(--transition-base);
+  line-height: 2;
+}
+
+.learning-harakat-active {
+  color: var(--blue-400);
+}
+
+/* -------- MAD DISPLAY -------- */
+.learning-mad-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.learning-mad-info {
+  text-align: center;
+  margin-bottom: var(--space-2);
+}
+
+.learning-mad-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.learning-mad-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.learning-mad-header h4 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--white);
+}
+
+.learning-mad-header p {
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+}
+
+.learning-duration-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.learning-duration-label {
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+  min-width: 48px;
+}
+
+.learning-duration-track {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.learning-duration-unit {
+  height: 8px;
+  flex: 1;
+  max-width: 60px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--blue-500), var(--blue-400));
+  transform-origin: left;
+}
+
+.learning-duration-count {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--blue-300);
+  min-width: 24px;
+}
+
+.learning-mad-example {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-lg);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.learning-mad-example-label {
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+}
+
+.learning-mad-meaning {
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+}
+
+/* -------- ADVANCED DISPLAY (Sukun/Tasydid/Lafadz) -------- */
+.learning-advanced-section h3 {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: var(--space-2);
+}
+
+.learning-advanced-desc {
+  font-size: var(--text-base);
+  color: var(--gray-400);
+  margin-bottom: var(--space-5);
+  line-height: 1.5;
+}
+
+.learning-advanced-examples {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.learning-advanced-card {
+  text-align: center;
+}
+
+.learning-advanced-arabic {
+  margin-bottom: var(--space-3);
+}
+
+.learning-advanced-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.learning-transliteration {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--gray-200);
+}
+
+.learning-note {
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+}
+
+/* Lafadz Allah: thick vs thin coloring */
+.lafadz-thick {
+  color: var(--red-400) !important;
+  text-shadow: 0 0 10px rgba(232, 69, 60, 0.4);
+}
+
+.lafadz-thin {
+  color: var(--blue-300) !important;
+  text-shadow: 0 0 10px rgba(0, 112, 224, 0.4);
+}
+
+/* -------- EXERCISE PLACEHOLDER -------- */
+.learning-exercise-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.learning-exercise-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.learning-exercise-card h3 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--white);
+}
+
+.learning-exercise-card p {
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+}
+
+/* -------- QUIZ SECTION -------- */
+.learning-quiz-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.learning-quiz-section h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: var(--space-2);
+}
+
+.learning-quiz-section p {
+  color: var(--gray-400);
+  font-size: var(--text-base);
+}
+
+.learning-quiz-info {
+  display: flex;
+  gap: var(--space-4);
+  color: var(--gray-500);
+  font-size: var(--text-sm);
+  margin-top: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.learning-submit-section {
+  text-align: center;
+}
+
+.learning-submit-section h3 {
+  margin-bottom: var(--space-2);
+}
+
+/* Submit Modal */
+.learning-submit-modal {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.learning-submit-modal p {
+  color: var(--gray-300);
+  line-height: 1.5;
+}
+
+.learning-submit-note {
+  font-size: var(--text-sm);
+  color: var(--gray-500) !important;
+}
+
+.learning-submit-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}

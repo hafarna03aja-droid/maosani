@@ -1,0 +1,202 @@
+/* ============================================================
+   Digital Tracing Canvas Styles
+   ============================================================ */
+
+.tracing-page {
+  padding: var(--space-4);
+  padding-bottom: 100px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tracing-header {
+  margin-bottom: var(--space-5);
+}
+
+.tracing-header h1 {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: var(--space-1);
+}
+
+.tracing-header p {
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+}
+
+/* Letter Selector */
+.tracing-letter-selector {
+  margin-bottom: var(--space-5);
+  overflow: hidden;
+}
+
+.tracing-letter-scroll {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding: var(--space-2) 0;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tracing-letter-scroll::-webkit-scrollbar { display: none; }
+
+.tracing-letter-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--gray-300);
+  transition: all var(--transition-fast);
+  scroll-snap-align: center;
+  min-width: 56px;
+  flex-shrink: 0;
+}
+
+.tracing-letter-btn .arabic {
+  font-size: 1.4rem;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.tracing-letter-name {
+  font-size: 0.6rem;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tracing-letter-active {
+  background: rgba(0, 112, 224, 0.15);
+  border-color: var(--blue-500);
+  color: var(--blue-300);
+}
+
+/* Canvas */
+.tracing-canvas-card {
+  text-align: center;
+}
+
+.tracing-canvas-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tracing-canvas-label span:first-child {
+  color: var(--blue-400);
+}
+
+.tracing-canvas-label span:nth-child(2) {
+  font-size: var(--text-sm);
+  color: var(--gray-300);
+  font-weight: 600;
+}
+
+.tracing-stroke-count {
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+}
+
+.tracing-canvas-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.tracing-canvas {
+  border-radius: var(--radius-xl);
+  border: 2px dashed rgba(0, 112, 224, 0.2);
+  background: rgba(10, 22, 40, 0.8);
+  touch-action: none; /* Prevent scroll on touch */
+  cursor: crosshair;
+  max-width: 100%;
+}
+
+/* Colors */
+.tracing-colors {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.tracing-color-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tracing-color-btn:hover {
+  transform: scale(1.15);
+}
+
+.tracing-color-active {
+  border-color: var(--white);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  transform: scale(1.15);
+}
+
+.tracing-width-control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: var(--space-2);
+}
+
+.tracing-width-control label {
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+}
+
+.tracing-width-control input[type="range"] {
+  width: 80px;
+  accent-color: var(--blue-500);
+}
+
+/* Actions */
+.tracing-actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+/* Instructions */
+.tracing-instructions {
+  margin-top: var(--space-5);
+}
+
+.tracing-instructions h3 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: var(--space-3);
+}
+
+.tracing-instructions ol {
+  list-style: decimal;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tracing-instructions li {
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+  line-height: 1.5;
+}
