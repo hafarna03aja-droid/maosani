@@ -15,6 +15,7 @@ const useAuthStore = create((set, get) => ({
   isLoading: true, // Start loading to check session
   error: null,
   isSupabase: isSupabaseConfigured(),
+  isTester: localStorage.getItem('maosani_tester_mode') === 'true',
 
   // Actions
   initialize: async () => {
@@ -22,6 +23,11 @@ const useAuthStore = create((set, get) => ({
       if (get().isSupabase) {
         const user = await authService.getCurrentUser();
         if (user) {
+          // Auto enable tester mode if login as admin@test.com
+          if (user.email === 'admin@test.com') {
+            set({ isTester: true });
+            localStorage.setItem('maosani_tester_mode', 'true');
+          }
           set({ user, isAuthenticated: true, isLoading: false });
         } else {
           set({ user: null, isAuthenticated: false, isLoading: false });
@@ -45,11 +51,15 @@ const useAuthStore = create((set, get) => ({
     set({ isLoading: true, error: null });
 
     if (get().isSupabase) {
-      const { data, error } = await authService.signIn(email, password);
+      const { error } = await authService.signIn(email, password);
       if (error) {
         set({ error: error.message, isLoading: false });
       } else {
         const profileUser = await authService.getCurrentUser();
+        if (email === 'admin@test.com') {
+          set({ isTester: true });
+          localStorage.setItem('maosani_tester_mode', 'true');
+        }
         set({ user: profileUser, isAuthenticated: true, isLoading: false });
       }
     } else {
@@ -58,7 +68,7 @@ const useAuthStore = create((set, get) => ({
         const foundUser = MOCK_USERS.find(u => u.email === email && u.password === password);
         // Fallback for simple email match if password isn't checked strictly in mock
         const fallbackUser = !foundUser ? MOCK_USERS.find(u => u.email === email) : foundUser;
-        
+
         if (fallbackUser) {
           localStorage.setItem('maosani_mock_user', JSON.stringify(fallbackUser));
           set({ user: fallbackUser, isAuthenticated: true, isLoading: false });
@@ -79,9 +89,9 @@ const useAuthStore = create((set, get) => ({
       } else {
         // Jika Supabase membutuhkan konfirmasi email, session akan null setelah signup
         if (!data.session) {
-          set({ 
-            error: 'Registrasi berhasil! Silakan cek kotak masuk / spam email Anda (' + email + ') untuk link verifikasi sebelum mulai masuk.', 
-            isLoading: false 
+          set({
+            error: 'Registrasi berhasil! Silakan cek kotak masuk / spam email Anda (' + email + ') untuk link verifikasi sebelum mulai masuk.',
+            isLoading: false
           });
         } else {
           // Secara otomatis login jika email confirmation dimatikan di Supabase
@@ -97,7 +107,7 @@ const useAuthStore = create((set, get) => ({
   /** Quick login — langsung login sebagai role tertentu (Dev only or mock mode) */
   loginAs: async (role) => {
     set({ isLoading: true, error: null });
-    
+
     // In Supabase mode, we might not support loginAs easily without knowing passwords,
     // but for demo purposes, we can try to login with standard demo accounts.
     if (get().isSupabase) {
@@ -125,7 +135,20 @@ const useAuthStore = create((set, get) => ({
     } else {
       localStorage.removeItem('maosani_mock_user');
     }
-    set({ user: null, isAuthenticated: false, error: null });
+    set({ user: null, isAuthenticated: false, isTester: false, error: null });
+    localStorage.removeItem('maosani_tester_mode');
+  },
+
+  /** Switch Tester Mode (Dev Only) */
+  toggleTesterMode: () => {
+    const newVal = !get().isTester;
+    set({ isTester: newVal });
+    localStorage.setItem('maosani_tester_mode', newVal.toString());
+  },
+
+  /** Login as Admin Tester */
+  loginAsMaster: async () => {
+    await get().login('admin@test.com', 'testing123');
   },
 
   /** Cek apakah user adalah guru */
@@ -150,6 +173,42 @@ const useAuthStore = create((set, get) => ({
   isAdmin: () => {
     const { user } = get();
     return user?.role === 'admin';
+  },
+
+  /** Simpan hasil tes penempatan */
+  completePlacementTest: async (recommendedStep) => {
+    const { user, isSupabase } = get();
+    if (!user) return;
+
+    if (isSupabase) {
+      const { error } = await authService.updateProfile(user.id, {
+        placement_test_completed: true,
+        placement_start_step: recommendedStep
+      });
+      if (!error) {
+        set({ 
+          user: { 
+            ...user, 
+            placement_test_completed: true, 
+            placement_start_step: recommendedStep,
+            // Also set camelCase for UI compatibility (SantriHome, etc)
+            placementTestCompleted: true,
+            placementStartStep: recommendedStep
+          } 
+        });
+      }
+    } else {
+      // Mock mode
+      const updatedUser = { 
+        ...user, 
+        placement_test_completed: true, 
+        placement_start_step: recommendedStep,
+        placementTestCompleted: true,
+        placementStartStep: recommendedStep
+      };
+      localStorage.setItem('maosani_mock_user', JSON.stringify(updatedUser));
+      set({ user: updatedUser });
+    }
   },
 
   clearError: () => set({ error: null }),

@@ -1,0 +1,151 @@
+/* ============================================================ */
+/* DevToolDrawer Styles                                         */
+/* ============================================================ */
+
+.dev-drawer-container {
+  position: fixed;
+  bottom: 80px; /* Di atas bottom nav mobile */
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none; /* Biar tidak ganggu UI di bawahnya kalau tertutup */
+}
+
+.dev-drawer-trigger {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--blue-600);
+  color: white;
+  border: 4px solid var(--gray-900);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: auto;
+}
+
+.dev-drawer-trigger:hover {
+  transform: scale(1.1) rotate(15deg);
+  background: var(--blue-500);
+}
+
+.dev-drawer-content {
+  position: absolute;
+  bottom: 64px;
+  right: 0;
+  width: 280px;
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dev-drawer-open .dev-drawer-content {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.dev-drawer-header {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--gray-700);
+}
+
+.dev-drawer-header h4 {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--gold-400);
+}
+
+.dev-drawer-mode {
+  font-size: 0.7rem;
+  color: var(--blue-400);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.dev-drawer-section {
+  margin-bottom: var(--space-4);
+}
+
+.dev-drawer-hint {
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  margin: 4px 0 0 0;
+  line-height: 1.4;
+}
+
+.dev-drawer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dev-drawer-info {
+  margin-top: var(--space-4);
+  background: var(--gray-800);
+  padding: 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--gray-400);
+}
+
+/* Toggle Switch Styles */
+.dev-drawer-switch {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.dev-drawer-switch input {
+  display: none;
+}
+
+.dev-drawer-slider {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  background: var(--gray-700);
+  border-radius: 20px;
+  margin-right: 12px;
+  transition: background 0.3s;
+}
+
+.dev-drawer-slider::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.dev-drawer-switch input:checked + .dev-drawer-slider {
+  background: var(--success);
+}
+
+.dev-drawer-switch input:checked + .dev-drawer-slider::before {
+  transform: translateX(16px);
+}
+
+.dev-drawer-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray-200);
+}

@@ -8,6 +8,7 @@ import { MOCK_PROGRESS } from '../data/mockUsers';
 import { LEARNING_MODULES, TAJWID_MODULES, ALL_MODULES } from '../data/modules';
 import progressService from '../services/progressService';
 import { isSupabaseConfigured } from '../lib/supabase';
+import useAuthStore from './authStore';
 
 const useProgressStore = create((set, get) => ({
   // State
@@ -76,6 +77,9 @@ const useProgressStore = create((set, get) => ({
   },
 
   getStepStatus: (santriId, stepNumber) => {
+    // Master Bypass if Tester Mode is ON
+    if (useAuthStore.getState().isTester) return 'unlocked';
+
     const { progressRecords } = get();
     const record = progressRecords.find(p => p.stepNumber === stepNumber); // Assuming single user context mostly
     if (record) return record.status;
@@ -85,9 +89,23 @@ const useProgressStore = create((set, get) => ({
   },
 
   canUnlockStep: (santriId, stepNumber) => {
-    const { progressRecords } = get();
+    const auth = useAuthStore.getState();
+    const { user, isTester } = auth;
+
+    // Master Bypass 
+    if (isTester) return true;
+
     if (stepNumber === 1) return true;
 
+    // Placement test override
+    const isCompleted = user?.placement_test_completed || user?.placementTestCompleted;
+    const startStep = user?.placement_start_step || user?.placementStartStep || 1;
+
+    if (isCompleted && stepNumber <= startStep) {
+      return true;
+    }
+
+    const { progressRecords } = get();
     const module = ALL_MODULES.find(m => m.stepNumber === stepNumber);
     if (!module) return false;
 
@@ -97,7 +115,7 @@ const useProgressStore = create((set, get) => ({
     });
   },
 
-  getSantriProgress: (santriId) => {
+  getSantriProgress: () => {
     return get().progressRecords;
   },
 
@@ -221,6 +239,22 @@ const useProgressStore = create((set, get) => ({
           : p
       ),
     }));
+  },
+
+  /** 
+   * Reset all progress (Dev only)
+   */
+  resetAllProgress: async (santriId) => {
+    if (!santriId) return;
+    set({ isLoading: true });
+    
+    await progressService.resetProgress(santriId);
+    
+    set({ 
+      progressRecords: [], 
+      pendingReviews: [],
+      isLoading: false 
+    });
   },
 }));
 

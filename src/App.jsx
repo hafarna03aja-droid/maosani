@@ -19,6 +19,8 @@ import TajwidModule from './features/tajwid/TajwidModule';
 import ProfilePage from './features/profile/ProfilePage';
 import AdminDashboard from './features/admin/AdminDashboard';
 import { Avatar } from './components/ui';
+import DevToolDrawer from './components/dev/DevToolDrawer';
+import AchievementOverlay from './components/achievement/AchievementOverlay';
 import './App.css';
 
 /** Route guard — only authenticated users pass */
@@ -225,6 +227,8 @@ export default function App() {
           <AppLayout />
         } />
       </Routes>
+      <AchievementOverlay />
+      {import.meta.env.DEV && <DevToolDrawer />}
     </BrowserRouter>
   );
 }

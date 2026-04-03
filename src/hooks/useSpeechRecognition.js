@@ -10,7 +10,7 @@ export default function useSpeechRecognition(options = {}) {
 
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
-  const [isSupported, setIsSupported] = useState(() => {
+  const [isSupported] = useState(() => {
     return !!(window.SpeechRecognition || window.webkitSpeechRecognition);
   });
   const [error, setError] = useState(null);

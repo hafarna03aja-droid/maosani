@@ -59,6 +59,12 @@ export default function SantriHome() {
         <div>
           <h1>Assalamu'alaikum 👋</h1>
           <h2>{user?.fullName}</h2>
+          {import.meta.env.DEV && (
+            <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+              <Button size="xs" variant="ghost" onClick={() => useGamificationStore.getState().addXP(500, 'Test Level Up')}>🚀 Test Level</Button>
+              <Button size="xs" variant="ghost" onClick={() => useGamificationStore.getState().earnBadge('quiz-perfect')}>🏆 Test Badge</Button>
+            </div>
+          )}
         </div>
         <ProgressRing
           value={overallPercent}

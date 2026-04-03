@@ -73,6 +73,30 @@ export default function StepQuiz({ stepNumber, module, onComplete, onClose }) {
         const score = Math.round((correctCount / questions.length) * 100);
         recordQuizResult(stepNumber, score, questions.length);
         setPhase('result');
+
+        // PREMUM EFFECT: Confetti Selebrasi
+        if (score >= PASSING_SCORE) {
+          const duration = 3 * 1000;
+          const end = Date.now() + duration;
+
+          if (score === 100) {
+            // Sempurna! - Hujan kembang api
+            const frame = () => {
+              window.confetti({ particleCount: 2, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#FFD700', '#3395FF'] });
+              window.confetti({ particleCount: 2, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#FFD700', '#3395FF'] });
+              if (Date.now() < end) requestAnimationFrame(frame);
+            };
+            frame();
+          } else {
+            // Lulus Biasa - Semburan tengah
+            window.confetti({
+              particleCount: 150,
+              spread: 70,
+              origin: { y: 0.6 },
+              colors: ['#3395FF', '#10B981']
+            });
+          }
+        }
       }
     }, 1200);
   };

@@ -7,14 +7,12 @@ let deferredPrompt = null;
 
 export function usePWA() {
   const [canInstall, setCanInstall] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(() => {
+    return window.matchMedia('(display-mode: standalone)').matches
+      || navigator.standalone === true;
+  });
 
   useEffect(() => {
-    // Check if already installed (standalone mode)
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
-      || navigator.standalone === true;
-    setIsInstalled(isStandalone);
-
     // Listen for install prompt
     const handleBeforeInstall = (e) => {
       e.preventDefault();

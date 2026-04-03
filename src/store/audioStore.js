@@ -4,6 +4,7 @@
  * Uses real MP3 files instead of Web Speech API
  */
 import { create } from 'zustand';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 // Singleton audio instance untuk mencegah overlap
 const audioPlayer = new Audio();
@@ -31,31 +32,62 @@ const useAudioStore = create((set, get) => ({
   },
 
   /**
-   * Play audio MP3 lokal per huruf
+   * Mendapatkan sumber URL audio (Supabase Storage vs Local)
    */
-  playLetter: async (letter) => {
-    const { stopAudio, volume, playbackRate } = get();
+  getAudioSrc: (type, id) => {
+    if (!id) return '';
+    if (id.startsWith('http')) return id;
+
+    // Jika Supabase terkonfigurasi, ambil dari Storage Bucket 'audio'
+    if (isSupabaseConfigured() && supabase) {
+      const { data } = supabase.storage
+        .from('audio')
+        .getPublicUrl(`${type}/${id}.mp3`);
+      
+      return data.publicUrl;
+    }
+
+    // Fallback ke folder public lokal
+    return `/audio/${type}/${id}.mp3`;
+  },
+
+  /**
+   * Play audio MP3 (Local or Remote)
+   * @param {string} type - 'hijaiyah', 'harakat', 'tajwid', 'example'
+   * @param {string} id - The filename OR a full absolute URL
+   */
+  playAudio: async (type, id) => {
+    const { stopAudio, volume, playbackRate, getAudioSrc } = get();
     stopAudio();
 
-    set({ isPlaying: true, currentLetter: letter.id });
+    const isFullUrl = id?.startsWith('http');
+    set({ isPlaying: true, currentLetter: isFullUrl ? id : `${type}-${id}` });
 
     try {
-      // Mapping ke folder public/audio/hijaiyah/
-      audioPlayer.src = `/audio/hijaiyah/${letter.id}.mp3`;
+      // Dapatkan URL sumber (Supabase jika ada, else Local)
+      audioPlayer.src = getAudioSrc(type, id);
       audioPlayer.volume = volume;
       audioPlayer.playbackRate = playbackRate;
       
-      // Handle the end of the audio track
       audioPlayer.onended = () => {
         set({ isPlaying: false, currentLetter: null });
       };
 
       await audioPlayer.play();
     } catch (error) {
-      console.warn('Audio playback failed or file missing:', error);
-      // Fallback UI state if file is missing
+      console.warn(`Audio playback failed for ${id}:`, error);
       set({ isPlaying: false, currentLetter: null });
     }
+  },
+
+  /**
+   * Deprecated: Use playAudio('hijaiyah', letter.id) instead.
+   * Keeping for backward compatibility.
+   */
+  playLetter: async (letter) => {
+    // Gunakan audioRef jika ada (hapus .mp3 karena getAudioSrc akan menambahkannya), fallback ke id
+    const audioId = letter.audioRef ? letter.audioRef.replace('.mp3', '') : letter.id;
+    return get().playAudio('hijaiyah', audioId);
   },
 
   stopAudio: () => {
@@ -65,23 +97,23 @@ const useAudioStore = create((set, get) => ({
   },
 
   /**
-   * Play sequence — untuk mode one-line-rule (Langkah 3-4)
-   * Memainkan urutan huruf berdasarkan audio MP3
+   * Play sequence — for One-Line Rule
+   * @param {Array} items - Array of { type, id }
    */
-  playSequence: async (letters, onComplete) => {
+  playSequence: async (items, onComplete) => {
     const { volume, playbackRate, playbackMode } = get();
     set({ isPlaying: true });
 
-    for (let i = 0; i < letters.length; i++) {
-      // Jika di-stop di tengah jalan
+    for (let i = 0; i < items.length; i++) {
       if (!get().isPlaying) break;
 
-      const letter = letters[i];
-      set({ currentLetter: letter.id });
+      const { type, id } = items[i];
+      set({ currentLetter: `${type}-${id}` });
 
       try {
         await new Promise((resolve, reject) => {
-          audioPlayer.src = `/audio/hijaiyah/${letter.id}.mp3`;
+          // Dapatkan URL sumber (Supabase jika ada, else Local)
+          audioPlayer.src = get().getAudioSrc(type, id);
           audioPlayer.volume = volume;
           audioPlayer.playbackRate = playbackRate;
           
@@ -91,16 +123,17 @@ const useAudioStore = create((set, get) => ({
           audioPlayer.play().catch(reject);
         });
       } catch (err) {
-        console.warn(`Gagal memutar ${letter.id}.mp3`, err);
-        // Tetap lanjut ke huruf berikutnya jika ada error
-        await new Promise(r => setTimeout(r, 500));
+        console.warn(`Gagal memutar ${type}/${id}.mp3`, err);
+        await new Promise(r => setTimeout(r, 400));
       }
 
-      // Pause between letters based on mode
+      // Add a small delay between items based on mode
       if (playbackMode === 'staccato') {
-        await new Promise(r => setTimeout(r, 400));
+        await new Promise(r => setTimeout(r, 450));
       } else if (playbackMode === 'continuous-no-break') {
-        await new Promise(r => setTimeout(r, 50));
+        // No extra break
+      } else {
+        await new Promise(r => setTimeout(r, 150));
       }
     }
 

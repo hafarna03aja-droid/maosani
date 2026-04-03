@@ -5,7 +5,6 @@
  */
 import { create } from 'zustand';
 import gamificationService from '../services/gamificationService';
-import progressService from '../services/progressService';
 import { isSupabaseConfigured } from '../lib/supabase';
 import useAuthStore from './authStore';
 
@@ -45,6 +44,7 @@ const useGamificationStore = create((set, get) => ({
   streak: { current: 3, best: 7, lastLoginDate: new Date().toISOString().split('T')[0] },
   stats: { totalQuizzes: 2, totalCorrectAnswers: 16, totalExercises: 5, canvasStrokes: 23, lettersFound: 12, recordingsSaved: 1 },
   xpHistory: [],
+  recentAchievement: null, // { type: 'badge' | 'level', data: Badge | Level }
   isSupabase: isSupabaseConfigured(),
   isLoading: false,
 
@@ -64,7 +64,7 @@ const useGamificationStore = create((set, get) => ({
             totalCorrectAnswers: data.total_correct_answers,
             canvasStrokes: data.canvas_strokes,
             lettersFound: data.letters_found,
-            recordingsSaved: data.recordings_saved,
+            recordings_saved: data.recordings_saved, // pastikan naming matching
           },
           earnedBadges: badges,
           isLoading: false,
@@ -99,12 +99,23 @@ const useGamificationStore = create((set, get) => ({
 
   getBadgeStatus: (badgeId) => get().earnedBadges.includes(badgeId),
 
+  clearAchievement: () => set({ recentAchievement: null }),
+
   addXP: async (amount, reason) => {
     const user = useAuthStore.getState().user;
+    const oldLevel = get().getLevel();
+    
     set(state => ({
       xp: state.xp + amount,
       xpHistory: [...state.xpHistory.slice(-20), { amount, reason, timestamp: Date.now() }],
     }));
+
+    // Check for level up
+    const newLevel = get().getLevel();
+    if (newLevel.level > oldLevel.level) {
+      set({ recentAchievement: { type: 'level', data: newLevel } });
+    }
+
     if (get().isSupabase && user) await gamificationService.addXP(user.id, amount);
   },
 
@@ -113,7 +124,11 @@ const useGamificationStore = create((set, get) => ({
     const badge = ALL_BADGES.find(b => b.id === badgeId);
     if (!badge) return;
 
-    set(state => ({ earnedBadges: [...state.earnedBadges, badgeId] }));
+    set(state => ({ 
+      earnedBadges: [...state.earnedBadges, badgeId],
+      recentAchievement: { type: 'badge', data: badge } 
+    }));
+    
     if (badge.xpReward) await get().addXP(badge.xpReward, `Badge: ${badge.name}`);
     
     const user = useAuthStore.getState().user;
@@ -151,7 +166,6 @@ const useGamificationStore = create((set, get) => ({
   recordQuizResult: async (stepNumber, score, totalQuestions) => {
     const user = useAuthStore.getState().user;
     
-    // Update local state and XP
     set(state => ({
       stats: { ...state.stats, totalQuizzes: state.stats.totalQuizzes + 1, totalCorrectAnswers: state.stats.totalCorrectAnswers + Math.round((score / 100) * totalQuestions) },
     }));
@@ -161,16 +175,13 @@ const useGamificationStore = create((set, get) => ({
       await get().earnBadge('quiz-perfect');
     }
 
-    // Step-based badges
     const map = { 1: 'hafal-14', 2: 'hafal-28', 3: 'harakat-master', 4: 'tanwin-master', 7: 'sukun-master', 8: 'tasydid-master', 9: 'lafadz-master' };
     if (map[stepNumber] && score >= 70) await get().earnBadge(map[stepNumber]);
     if (stepNumber === 6 && score >= 70) await get().earnBadge('mad-master');
 
-    // DB calls
     if (get().isSupabase && user) {
       gamificationService.incrementStat(user.id, 'totalQuizzes', 1);
       gamificationService.incrementStat(user.id, 'totalCorrectAnswers', Math.round((score / 100) * totalQuestions));
-      progressService.saveQuizResult(user.id, stepNumber, { score, totalQuestions, correctAnswers: Math.round((score/100)*totalQuestions), passed: score >= 70, timeTaken: 300, answers: [] });
     }
   },
 
@@ -178,6 +189,38 @@ const useGamificationStore = create((set, get) => ({
     set(state => ({ stats: { ...state.stats, [statKey]: (state.stats[statKey] || 0) + amount } }));
     const user = useAuthStore.getState().user;
     if (get().isSupabase && user) gamificationService.incrementStat(user.id, statKey, amount);
+  },
+
+  /** 
+   * Calculate mastery levels for Radar Chart 
+   * Categories: Hijaiyah, Harakat, Tanwin, Mad, Sukun, Tajwid
+   */
+  calculateMastery: (progressRecords) => {
+    const categories = [
+      { name: 'Hijaiyah', steps: [1, 2] },
+      { name: 'Harakat', steps: [3] },
+      { name: 'Tanwin', steps: [4] },
+      { name: 'Mad', steps: [5, 6] },
+      { name: 'Sukun/Tasydid', steps: [7, 8] },
+      { name: 'Tajwid', steps: [9] },
+    ];
+
+    return categories.map(cat => {
+      let score = 0;
+      cat.steps.forEach(s => {
+        const record = progressRecords.find(p => p.stepNumber === s);
+        if (record?.status === 'approved') {
+          score += 100 / cat.steps.length;
+        } else if (record?.status === 'pending_review' || record?.status === 'in_progress') {
+          score += 40 / cat.steps.length;
+        }
+      });
+      return { 
+        subject: cat.name, 
+        value: Math.min(100, Math.round(score)),
+        fullMark: 100 
+      };
+    });
   },
 }));
 

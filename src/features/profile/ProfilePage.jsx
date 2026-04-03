@@ -6,15 +6,18 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import useAuthStore from '../../store/authStore';
 import useGamificationStore, { LEVEL_THRESHOLDS, ALL_BADGES } from '../../store/gamificationStore';
+import useProgressStore from '../../store/progressStore';
 import { Card, Badge, Button, ProgressBar, Modal } from '../../components/ui';
+import MasteryRadar from '../../components/profile/MasteryRadar';
 import './profile.css';
 
 export default function ProfilePage() {
   const { user, logout } = useAuthStore();
   const {
     xp, earnedBadges, streak, stats,
-    getLevel, getNextLevel, getXPProgress, getBadgeStatus,
+    getLevel, getNextLevel, getXPProgress, getBadgeStatus, calculateMastery
   } = useGamificationStore();
+  const { progressRecords } = useProgressStore();
 
   const [showBadgeModal, setShowBadgeModal] = useState(null);
   const [activeSection, setActiveSection] = useState('stats');
@@ -22,6 +25,7 @@ export default function ProfilePage() {
   const currentLevel = getLevel();
   const nextLevel = getNextLevel();
   const xpProgress = getXPProgress();
+  const masteryData = calculateMastery(progressRecords);
 
   return (
     <div className="profile-page">
@@ -111,6 +115,16 @@ export default function ProfilePage() {
       {/* Stats Section */}
       {activeSection === 'stats' && (
         <motion.div className="profile-stats" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          
+          {/* Mastery Radar Chart */}
+          <div className="profile-radar-section">
+            <h3 className="profile-section-title">🗺️ Pemetaan Kemahiran</h3>
+            <Card variant="elevated" padding="lg">
+              <MasteryRadar data={masteryData} size={window.innerWidth > 500 ? 400 : 320} />
+              <p className="profile-radar-hint">Statistik ini menunjukkan tingkat penguasaan Anda pada setiap kategori materi.</p>
+            </Card>
+          </div>
+
           <div className="profile-stats-grid">
             <Card variant="default" padding="md" className="profile-stat-item">
               <span className="profile-stat-num">{stats.totalQuizzes}</span>

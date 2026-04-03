@@ -2,10 +2,11 @@
  * Quran Explorer — Mini-game Simulasi Mushaf
  * Santri bisa mengklik/mencari huruf yang baru dipelajari dalam teks Al-Qur'an
  */
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { HIJAIYAH_LETTERS, QURAN_SAMPLES } from '../../data/hijaiyah';
 import { Card, Badge, Button } from '../../components/ui';
+import useGamificationStore from '../../store/gamificationStore';
 import './quran.css';
 
 // Membantu menormalkan huruf Arab untuk pencarian (misal: Alif dengan hamzah tetap terbaca Alif)
@@ -24,6 +25,7 @@ export default function QuranExplorer() {
   const [selectedVerse, setSelectedVerse] = useState(0);
   const [score, setScore] = useState(0);
   const [showHints, setShowHints] = useState(false);
+  const { addXP } = useGamificationStore();
 
   const verse = QURAN_SAMPLES[selectedVerse];
 
@@ -69,6 +71,21 @@ export default function QuranExplorer() {
   };
 
   const allFound = letterPositions.length > 0 && foundPositions.length === letterPositions.length;
+
+  // PREMIUM EFFECT: Celebrate on All Found
+  useEffect(() => {
+    if (allFound && letterPositions.length > 0) {
+      addXP(15, 'Quran Exploration');
+      if (window.confetti) {
+        window.confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#3395FF', '#FFD700', '#10B981']
+        });
+      }
+    }
+  }, [allFound, letterPositions.length, addXP]);
 
   return (
     <div className="quran-page">

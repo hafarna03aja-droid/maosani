@@ -7,10 +7,12 @@
  * - Hasil tersimpan dan digunakan untuk unlock override
  */
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HIJAIYAH_LETTERS } from '../../data/hijaiyah';
 import { getPlacementRecommendation } from '../../utils/unlockLogic';
 import { Button, Card, ProgressBar } from '../../components/ui';
+import useAuthStore from '../../store/authStore';
 import './placement.css';
 
 const TOTAL_QUESTIONS = 10;
@@ -52,6 +54,10 @@ export default function PlacementTest() {
   const [answers, setAnswers] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
+  const { completePlacementTest } = useAuthStore();
 
   const questions = useMemo(() => generateQuestions(), []);
 
@@ -77,6 +83,18 @@ export default function PlacementTest() {
 
   const score = Math.round((answers.filter(a => a.correct).length / TOTAL_QUESTIONS) * 100);
   const recommendation = getPlacementRecommendation(score);
+
+  const handleAccept = async () => {
+    setIsSubmitting(true);
+    try {
+      await completePlacementTest(recommendation.recommendedStep);
+      navigate('/roadmap');
+    } catch (error) {
+      console.error('Failed to save placement result:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   // --- INTRO ---
   if (phase === 'intro') {
@@ -133,7 +151,13 @@ export default function PlacementTest() {
           </Card>
 
           <div className="placement-result-actions">
-            <Button variant="primary" size="lg" fullWidth>
+            <Button 
+              variant="primary" 
+              size="lg" 
+              fullWidth 
+              onClick={handleAccept}
+              isLoading={isSubmitting}
+            >
               ✅ Terima & Mulai Belajar
             </Button>
             <Button

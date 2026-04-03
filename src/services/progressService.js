@@ -231,6 +231,41 @@ const progressService = {
 
     return { unsubscribe: () => supabase.removeChannel(channel) };
   },
+
+  /**
+   * Reset all progress and results for a santri (Dev only)
+   */
+  resetProgress: async (santriId) => {
+    if (!isSupabaseConfigured()) return true;
+
+    // Delete progress records
+    const { error: pError } = await supabase
+      .from('progress')
+      .delete()
+      .eq('santri_id', santriId);
+
+    // Delete quiz results
+    const { error: qError } = await supabase
+      .from('quiz_results')
+      .delete()
+      .eq('santri_id', santriId);
+    
+    // Reset gamification (XP, etc)
+    const { error: gError } = await supabase
+      .from('gamification')
+      .update({ 
+        xp: 0, 
+        streak_current: 0, 
+        total_quizzes: 0, 
+        total_correct_answers: 0,
+        canvas_strokes: 0,
+        letters_found: 0,
+        recordings_saved: 0
+      })
+      .eq('santri_id', santriId);
+
+    return !pError && !qError && !gError;
+  },
 };
 
 export default progressService;

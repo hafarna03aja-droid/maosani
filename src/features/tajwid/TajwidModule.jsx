@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import useAuthStore from '../../store/authStore';
 import useProgressStore from '../../store/progressStore';
+import useAudioStore from '../../store/audioStore';
 import { TAJWID_MODULES } from '../../data/modules';
 import { Card, Badge, Button, Modal } from '../../components/ui';
 import './tajwid.css';
@@ -193,6 +194,7 @@ export default function TajwidModule() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { getStepStatus } = useProgressStore();
+  const { playAudio, currentLetter } = useAudioStore();
   const [selectedModule, setSelectedModule] = useState(null);
   const [expandedSection, setExpandedSection] = useState(null);
 
@@ -326,14 +328,25 @@ export default function TajwidModule() {
 
                           <div className="tajwid-examples">
                             <h4>Contoh:</h4>
-                            {section.examples.map((ex, ei) => (
-                              <div key={ei} className="tajwid-example-item">
-                                <span className="arabic" style={{ fontSize: '1.5rem', color: section.color }}>
-                                  {ex.text}
-                                </span>
-                                <span className="tajwid-example-rule">{ex.rule}</span>
-                              </div>
-                            ))}
+                            {section.examples.map((ex, ei) => {
+                              const audioId = ex.text.replace(/\s/g, '-').toLowerCase();
+                              return (
+                                <div key={ei} className="tajwid-example-item">
+                                  <div className="tajwid-example-main">
+                                    <span className="arabic" style={{ fontSize: '1.5rem', color: section.color }}>
+                                      {ex.text}
+                                    </span>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      icon="🔊"
+                                      onClick={() => playAudio('tajwid', audioId)}
+                                    />
+                                  </div>
+                                  <span className="tajwid-example-rule">{ex.rule}</span>
+                                </div>
+                              );
+                            })}
                           </div>
                         </motion.div>
                       )}
