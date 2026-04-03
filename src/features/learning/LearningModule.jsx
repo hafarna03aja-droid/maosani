@@ -209,7 +209,7 @@ function HarakatDisplay({ type }) {
    */
   const handlePlaySingle = (harakat, letter) => {
     if (isPlaying && !activeRowId) return; // Don't interrupt row play but allow individual play
-    playLetter({ ...letter, id: `${letter.id}-${harakat.id}`, type: 'harakat' });
+    playLetter({ ...letter, id: `${letter.id}_${harakat.id}`, type: 'harakat' });
   };
 
   /**
@@ -225,7 +225,7 @@ function HarakatDisplay({ type }) {
     // Prepare sequence of { type, id }
     const sequence = letters.map(letter => ({
       type: 'harakat',
-      id: `${letter.id}-${harakat.id}`
+      id: `${letter.id}_${harakat.id}`
     }));
 
     await useAudioStore.getState().playSequence(sequence, () => {
@@ -244,12 +244,25 @@ function HarakatDisplay({ type }) {
       {harakatSet.map((harakat) => (
         <Card key={harakat.id} variant="default" padding="md" className="learning-harakat-row">
           <div className="learning-harakat-header">
-            <div>
-              <span className="arabic" style={{ fontSize: '2rem' }}>
-                بـ{harakat.symbol}
-              </span>
-              <h4>{harakat.name}</h4>
-              <p>Bunyi: "{harakat.sound}" — {harakat.description}</p>
+            <div className="learning-harakat-hero">
+              <div className="learning-harakat-example">
+                <span className="arabic" style={{ fontSize: '3rem' }}>
+                  بـ{harakat.symbol}
+                </span>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  icon={currentLetter === `harakat-materi_${harakat.id}` ? '⏳' : '🔊'}
+                  onClick={() => playAudio('harakat', `materi_${harakat.id}`)}
+                >
+                  Dengar Contoh
+                </Button>
+              </div>
+              <div className="learning-harakat-text">
+                <Badge variant="blue" size="sm">TEORI & BUNYI</Badge>
+                <h4>{harakat.name}</h4>
+                <p>Bunyi: "{harakat.sound}" — {harakat.description}</p>
+              </div>
             </div>
           </div>
 
@@ -262,7 +275,9 @@ function HarakatDisplay({ type }) {
               return (
                 <div key={rowId} className="learning-harakat-group-row">
                   <div className="learning-group-controls">
-                    <span className="learning-group-label">Bagian {gIdx + 1} (1-28)</span>
+                    <span className="learning-group-label">
+                      Bagian {gIdx + 1} (Huruf {gIdx * 7 + 1} - {(gIdx + 1) * 7})
+                    </span>
                     <Button
                       variant={rowCompleted[rowId] ? 'success' : 'primary'}
                       size="sm"
@@ -277,7 +292,7 @@ function HarakatDisplay({ type }) {
                   {/* Row of letters with harakat */}
                   <div className="learning-harakat-letters" dir="rtl">
                     {group.map((letter, li) => {
-                      const harakatCharId = `harakat-${letter.id}-${harakat.id}`;
+                      const harakatCharId = `harakat-${letter.id}_${harakat.id}`;
                       const isActiveChar = currentLetter === harakatCharId;
 
                       return (
@@ -285,10 +300,12 @@ function HarakatDisplay({ type }) {
                           key={letter.id}
                           className={`learning-harakat-char arabic ${isCurrentRowActive || isActiveChar ? 'learning-harakat-active' : ''}`}
                           animate={isCurrentRowActive || isActiveChar ? {
-                            color: ['#CBD5E1', '#3395FF', '#CBD5E1'],
-                            scale: [1, 1.25, 1],
-                          } : {}}
-                          transition={isCurrentRowActive ? { delay: li * 0.4, duration: 0.6 } : { duration: 0.3 }}
+                            color: ['#FFFFFF', '#FFD700', '#FFFFFF', '#FFD700'],
+                            scale: isActiveChar ? [1, 1.45, 1.3] : [1, 1.25, 1],
+                            rotate: isActiveChar ? [0, -5, 5, 0] : 0,
+                            filter: ['drop-shadow(0 0 5px #FFD700)', 'drop-shadow(0 0 25px #FFD700)', 'drop-shadow(0 0 10px #FFD700)'],
+                          } : { scale: 1, rotate: 0, filter: 'drop-shadow(0 0 0px #FFD700)' }}
+                          transition={isCurrentRowActive ? { delay: li * 0.4, duration: 0.6 } : { duration: 0.35, type: 'spring', stiffness: 400 }}
                           onClick={() => handlePlaySingle(harakat, letter)}
                         >
                           <span className="harakat-letter-box">

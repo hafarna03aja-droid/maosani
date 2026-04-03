@@ -112,12 +112,19 @@ export default function useCanvas(options = {}) {
     const point = getCoords(e);
     const lastPoint = lastPointRef.current;
 
-    // Draw smooth line
+    // Draw smooth line with midpoint for visual consistency
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = lineWidth;
     ctx.beginPath();
+    
+    // Use midpoint quadratic curve for smoother visual feedback
+    const midPoint = {
+      x: (lastPoint.x + point.x) / 2,
+      y: (lastPoint.y + point.y) / 2
+    };
+    
     ctx.moveTo(lastPoint.x, lastPoint.y);
-    ctx.lineTo(point.x, point.y);
+    ctx.quadraticCurveTo(lastPoint.x, lastPoint.y, midPoint.x, midPoint.y);
     ctx.stroke();
 
     lastPointRef.current = point;
@@ -211,14 +218,18 @@ export default function useCanvas(options = {}) {
     offUser.width = w; offUser.height = h;
     const uCtx = offUser.getContext('2d', { willReadFrequently: true });
     
+    // PENTING: Skala context untuk mencocokkan koordinat CSS dengan resolusi High-DPI
+    const dpr = window.devicePixelRatio || 1;
+    uCtx.scale(dpr, dpr);
+    
     // Draw user strokes
     uCtx.lineCap = 'round';
     uCtx.lineJoin = 'round';
     strokes.forEach(stroke => {
       if (stroke.length < 2) return;
       uCtx.strokeStyle = '#000000';
-      // Pertebal garis user saat valuasi agar lebih toleran
-      uCtx.lineWidth = lineWidth * (window.devicePixelRatio || 1) * 3; 
+      // Pertebal garis user saat valuasi agar lebih toleran (khususnya untuk jari)
+      uCtx.lineWidth = lineWidth * 4; 
       uCtx.beginPath();
       uCtx.moveTo(stroke[0].x, stroke[0].y);
       for (let i = 1; i < stroke.length; i++) {

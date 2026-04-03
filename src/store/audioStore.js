@@ -87,7 +87,8 @@ const useAudioStore = create((set, get) => ({
   playLetter: async (letter) => {
     // Gunakan audioRef jika ada (hapus .mp3 karena getAudioSrc akan menambahkannya), fallback ke id
     const audioId = letter.audioRef ? letter.audioRef.replace('.mp3', '') : letter.id;
-    return get().playAudio('hijaiyah', audioId);
+    const type = letter.type || 'hijaiyah';
+    return get().playAudio(type, audioId);
   },
 
   stopAudio: () => {

@@ -362,17 +362,44 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+.learning-harakat-hero {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.learning-harakat-example {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  background: rgba(0, 112, 224, 0.05);
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(0, 112, 224, 0.1);
+  min-width: 120px;
+}
+
+.learning-harakat-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 .learning-harakat-header h4 {
-  font-size: var(--text-base);
-  font-weight: 700;
+  font-size: var(--text-lg);
+  font-weight: 800;
   color: var(--white);
+  margin: 0;
 }
 
 .learning-harakat-header p {
-  font-size: var(--text-xs);
-  color: var(--gray-500);
+  font-size: var(--text-sm);
+  color: var(--gray-400);
 }
 
 .learning-harakat-letters {
@@ -409,15 +436,43 @@
 }
 
 .learning-harakat-active {
-  color: var(--blue-400) !important;
-  background: rgba(0, 112, 224, 0.1) !important;
-  box-shadow: 0 0 15px rgba(0, 112, 224, 0.2);
+  color: #FFFFFF !important;
+  background: rgba(255, 215, 0, 0.25) !important;
+  box-shadow: 
+    0 0 30px rgba(255, 215, 0, 0.6), 
+    0 0 60px rgba(255, 215, 0, 0.2),
+    inset 0 0 15px rgba(255, 255, 255, 0.3);
+  border-color: #FFD700 !important;
+  z-index: 10;
+  transform: scale(1.1);
+}
+
+/* Pulsing ring effect - Gold */
+.learning-harakat-active::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 3px solid #FFD700;
+  border-radius: var(--radius-xl);
+  animation: harakat-pulse 1.2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes harakat-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
 
 .harakat-letter-box {
   display: inline-block;
   min-width: 1.5em;
   text-align: center;
+  filter: drop-shadow(0 0 8px rgba(0, 112, 224, 0));
+  transition: filter 0.3s ease;
+}
+
+.learning-harakat-active .harakat-letter-box {
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
 }
 
 .learning-harakat-groups-container {
