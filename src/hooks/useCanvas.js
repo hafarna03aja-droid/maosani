@@ -53,9 +53,18 @@ export default function useCanvas(options = {}) {
     ctx.fillStyle = 'rgba(10, 22, 40, 0.3)';
     ctx.fillRect(0, 0, width, height);
 
+    // Dynamic Font Size
+    const baseSize = guideFontSize;
+    let finalFontSize = baseSize;
+    
+    // Scale down if text is long
+    if (guideLetter.length > 2) {
+      finalFontSize = baseSize * (2 / guideLetter.length);
+    }
+
     // Guide letter (semi-transparent)
     ctx.fillStyle = guideColor;
-    ctx.font = `${guideFontSize}px Amiri, 'Noto Naskh Arabic', serif`;
+    ctx.font = `${finalFontSize}px Amiri, 'Noto Naskh Arabic', serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(guideLetter, width / 2, height / 2);
@@ -205,9 +214,16 @@ export default function useCanvas(options = {}) {
     offGuide.width = w; offGuide.height = h;
     const gCtx = offGuide.getContext('2d', { willReadFrequently: true });
     
+    // Dynamic Font Size
+    const baseSize = guideFontSize;
+    let finalFontSize = baseSize;
+    if (guideLetter.length > 2) {
+      finalFontSize = baseSize * (2 / guideLetter.length);
+    }
+    
     // Gambar text guide, warna solid
     gCtx.fillStyle = '#000000';
-    gCtx.font = `${guideFontSize * (window.devicePixelRatio || 1)}px Amiri, 'Noto Naskh Arabic', serif`;
+    gCtx.font = `${finalFontSize * (window.devicePixelRatio || 1)}px Amiri, 'Noto Naskh Arabic', serif`;
     gCtx.textAlign = 'center';
     gCtx.textBaseline = 'middle';
     gCtx.fillText(guideLetter, w / 2, h / 2);
