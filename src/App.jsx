@@ -66,7 +66,7 @@ function SantriNav() {
   const navItems = [
     { path: '/', icon: '🏠', label: 'Beranda' },
     { path: '/roadmap', icon: '🗺️', label: 'Belajar' },
-    { path: '/canvas', icon: '✍️', label: 'Menulis' },
+    { path: '/menulis', icon: '✍️', label: 'Menulis' },
     { path: '/quran', icon: '📖', label: 'Mushaf' },
     { path: '/profile', icon: '👤', label: 'Profil' },
   ];
@@ -175,7 +175,7 @@ function AppLayout() {
               </ProtectedRoute>
             } />
             <Route path="/roadmap" element={<ProtectedRoute><RoadmapView /></ProtectedRoute>} />
-            <Route path="/canvas" element={<ProtectedRoute><TracingCanvas /></ProtectedRoute>} />
+            <Route path="/menulis" element={<ProtectedRoute><TracingCanvas /></ProtectedRoute>} />
             <Route path="/placement" element={<ProtectedRoute><PlacementTest /></ProtectedRoute>} />
             <Route path="/quran" element={<ProtectedRoute><QuranExplorer /></ProtectedRoute>} />
             <Route path="/voice" element={<ProtectedRoute><VoiceRecorder /></ProtectedRoute>} />
