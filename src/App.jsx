@@ -223,8 +223,8 @@ export default function App() {
         } />
         <Route path="/*" element={
           !isAuthenticated ? <Navigate to="/login" replace /> :
-          user?.role === 'guru_pending' ? <GuruPendingView /> :
-          <AppLayout />
+            user?.role === 'guru_pending' ? <GuruPendingView /> :
+              <AppLayout />
         } />
       </Routes>
       <AchievementOverlay />

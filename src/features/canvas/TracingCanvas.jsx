@@ -194,7 +194,6 @@ export default function TracingCanvas() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.2 }}
-        key={`${selectedLevel.id}-${selectedLetter.id}-${selectedPosition}-${selectedWord.id}`}
       >
         <Card variant="elevated" padding="md" className="tracing-canvas-card">
           {/* Current target label */}

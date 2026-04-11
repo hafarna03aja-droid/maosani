@@ -40,6 +40,10 @@ export default function useCanvas(options = {}) {
     ctx.lineJoin = 'round';
     ctxRef.current = ctx;
 
+    // Clear previous strokes when guide changes
+    setStrokes([]);
+    setCurrentStroke([]);
+
     // Draw guide letter
     drawGuide(ctx);
   }, [width, height, guideLetter]);

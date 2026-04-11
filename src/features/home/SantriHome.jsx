@@ -204,7 +204,7 @@ export default function SantriHome() {
             <span>🗺️</span>
             <span>Peta Belajar</span>
           </Card>
-          <Card variant="default" padding="md" className="home-action-card" onClick={() => navigate('/canvas')}>
+          <Card variant="default" padding="md" className="home-action-card" onClick={() => navigate('/menulis')}>
             <span>✍️</span>
             <span>Latihan Menulis</span>
           </Card>

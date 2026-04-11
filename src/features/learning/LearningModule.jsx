@@ -605,7 +605,7 @@ export default function LearningModule() {
                 <span style={{ fontSize: '3rem' }}>✍️</span>
                 <h3>Latihan Menulis</h3>
                 <p>Latih menulis huruf yang telah dipelajari pada kanvas digital</p>
-                <Button variant="primary" size="md" onClick={() => navigate('/canvas')}>
+                <Button variant="primary" size="md" onClick={() => navigate('/menulis')}>
                   Buka Kanvas Menulis
                 </Button>
               </Card>
